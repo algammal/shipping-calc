@@ -8,25 +8,20 @@ import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import OriginStep from './steps/OriginStep';
+import PackageStep from './steps/PackageStep';
 
 const steps = [
   {
     label: 'Select Origin',
-    description: `For each ad campaign that you create, you can control how much
-              you're willing to spend on clicks and conversions, which networks
-              and geographical locations you want your ads to show on, and more.`,
+    color:'#1976d2',
   },
   {
     label: 'Select Destination',
-    description:
-      'An ad group contains one or more ads which target a shared set of keywords.',
+    color:'#f8b300',
   },
   {
     label: 'Package Dimensions',
-    description: `Try out different ad text to see what brings in the most customers,
-              and learn how to enhance your ads using features like ad extensions.
-              If you run into any problems with your ads, find out how to tell if
-              they're running and how to resolve approval issues.`,
+    color:'#18cf99',
   },
 ];
 
@@ -53,10 +48,10 @@ function MultiStepForm({ isSearchedHandler, isSearched }: { isSearchedHandler: (
 
   }
   return (
-    <Box sx={{ maxWidth: 400 }}>
+    <Box sx={{ maxWidth: '100%' }}>
         {!isSearched &&
         <div>
-        <h1>Shipment info</h1>
+        <Typography variant="h1">Shipment info</Typography>
         <p>Please fill in the details for your shipment.following the steps below:</p>
       <Stepper activeStep={activeStep} orientation="vertical">
         {steps.map((step, index) => (
@@ -67,11 +62,21 @@ function MultiStepForm({ isSearchedHandler, isSearched }: { isSearchedHandler: (
                   <Typography variant="caption">Last step</Typography>
                 ) : null
               }
+               slotProps={{
+          stepIcon: {
+            sx: {
+              // Targets the base icon state, active state, and completed state
+              '&, &.Mui-active, &.Mui-completed': {
+                color: step.color,
+              },
+            },
+          },
+        }}
             >
               {step.label}
             </StepLabel>
             <StepContent>
-              <OriginStep />
+              {index === 2 ? <PackageStep /> : <OriginStep />}
               <Box sx={{ mb: 2 }}>
                 <Button
                   variant="contained"

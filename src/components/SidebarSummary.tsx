@@ -1,61 +1,70 @@
 import LocationPinIcon from '@mui/icons-material/LocationPin';
 import FlagIcon from '@mui/icons-material/Flag';
-import { Box } from '@mui/material';
+import { Stack, Paper, Typography } from '@mui/material';
 
 function SidebarSummary() {
     return (
-        <div>
-            <img alt="logo" src="/fincartLogo.avif" style={{ width: '150px', marginBottom: '20px' }} />
-            <h2>Shipment Summary</h2>
-            <ul>
-                <li style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
-                    <span style={{
-                        backgroundColor: '#0065fa',
-                        width: '40px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        height: '40px',
-                        borderRadius: '100%',
-                        marginRight: '10px'
-                    }}>
-                        <LocationPinIcon style={{ color: '#fff' }} />
-                    </span>
-                    Origin Details: Egypt, CA
-                </li>
+        <>
+            <img src="/fincartLogo.avif" alt="logo" width={180} />
+            <Stack className="fullHeightCenterColumn">
+                <Typography variant="h2" className="sectionTitle">
+                    Shipment Summary
+                </Typography>
 
-                <li style={{ display: 'flex', alignItems: 'center' }}>
-                    <span style={{
-                        backgroundColor: '#f8b300',
-                        width: '40px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        height: '40px',
-                        borderRadius: '100%',
-                        marginRight: '10px'
-                    }}>
-                        <FlagIcon style={{ color: '#fff' }} />
-                    </span>
-                    Destination Details: Saudi Arabia, SA
-                </li>
+                <Stack className="row">
+                    <Paper className="iconCircle iconPrimary" elevation={0}>
+                        <LocationPinIcon />
+                    </Paper>
+                    <Typography>Origin Details:</Typography>
 
-                
-                    </ul>
-                    <Box sx={{ mt: 2 }}>
-                        <div style={{ marginTop: '15px', listStyleType: 'none' }}>
-                    <div><h2>Package Dimensions:</h2></div>
-                    <div style={{ display: 'flex' }}>
-                        <div style={{ marginRight: '20px' }}>
-                            Weight: <span style={{ fontSize: '1.5rem',fontWeight: 'bold' }}>20kg</span>
-                        </div>
-                        <div>Volume: <span style={{ fontSize: '1.5rem',fontWeight: 'bold' }}>1000cm³</span>
-                        </div>
+                </Stack>
+                <Stack sx={{
+                    display: "flex",
+                    alignItems: "baseline",
+                    flexFlow: "column",
+                    mb:3
+                }}>
+                    <Typography>location: Egypt, CA</Typography>
+                    <Typography>Name: test</Typography>
+                    <Typography>Phone: 000xxx0000</Typography>
+                    <Typography>Location Details: 000xxx0000</Typography>
+                </Stack>
+
+                <Stack className="row">
+                    <Paper className="iconCircle iconWarning" elevation={0}>
+                        <FlagIcon />
+                    </Paper>
+                    <Typography>Destination Details:</Typography>
+                </Stack>
+                <Stack sx={{
+                    display: "flex",
+                    alignItems: "baseline",
+                    flexFlow: "column",
+                    mb:3
+                }}>
+                    <Typography>location: Egypt, CA</Typography>
+                    <Typography>Name: test</Typography>
+                    <Typography>Phone: 000xxx0000</Typography>
+                    <Typography>Location Details: 000xxx0000</Typography>
+                </Stack>
+
+                <Typography variant="h2" className="sectionTitle">
+                    Package Dimensions
+                </Typography>
+
+                <Stack className="dimensionsRow">
+                    <div>
+                        <Typography>Weight</Typography>
+                        <Typography className="valueText">20kg</Typography>
                     </div>
-                </div>
-                    </Box>
-                </div>
-                );
+                    <div>
+                        <Typography>Volume</Typography>
+                        <Typography className="valueText">1000cm³</Typography>
+                    </div>
+                </Stack>
+                <Stack><Typography>Package Description: Test Package</Typography></Stack>
+            </Stack>
+        </>
+    );
 }
-
-                export default SidebarSummary;
+export default SidebarSummary;
