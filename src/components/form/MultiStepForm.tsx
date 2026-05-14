@@ -8,8 +8,8 @@ import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import OriginStep from './steps/OriginStep';
+import DestinationStep from './steps/DestinationStep';
 import PackageStep from './steps/PackageStep';
-
 
 const steps = [
   {
@@ -27,19 +27,25 @@ const steps = [
 ];
 
 
-function MultiStepForm({ methods, isSearchedHandler, isSearched }: { methods: any, isSearchedHandler: (value: boolean) => void, isSearched: boolean }) {
+function MultiStepForm({
+  methods,
+  isSearchedHandler,
+  isSearched,
+}: {
+  methods: any;
+  isSearchedHandler: (value: boolean) => void;
+  isSearched: boolean;
+}) {
   const [activeStep, setActiveStep] = React.useState(0);
 
-
-  const handleNext = async() => {
+  const handleNext = async () => {
     console.log('test',methods.getValues())
-    let isValid = false
-    if(activeStep === 0) isValid = await methods.trigger(["originCountry"]);
-    else if(activeStep === 1) isValid = await methods.trigger(["destinationCountry"]);
+    let isValid = false;
+    if (activeStep === 0) isValid = await methods.trigger(['originCountry']);
+    else if (activeStep === 1) isValid = await methods.trigger(['destinationCountry']);
+    else if (activeStep === 2) isValid = await methods.trigger(['weight', 'volume']);
 
-
-  if (isValid) setActiveStep((prev) => prev + 1);
-    // setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    if (isValid) setActiveStep((prev) => prev + 1);
   };
 
   const handleBack = () => {
@@ -51,11 +57,13 @@ function MultiStepForm({ methods, isSearchedHandler, isSearched }: { methods: an
     isSearchedHandler(false);
   };
 
-  const handelSubmit = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    isSearchedHandler(true);
-
-  }
+  const handelSubmit = async () => {
+    const isValid = await methods.trigger(['weight', 'volume']);
+    if (isValid) {
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+      isSearchedHandler(true);
+    }
+  };
   return (
     <Box sx={{ maxWidth: '100%' }}>
       {!isSearched &&
@@ -85,7 +93,13 @@ function MultiStepForm({ methods, isSearchedHandler, isSearched }: { methods: an
                   {step.label}
                 </StepLabel>
                 <StepContent>
-                  {index === 2 ? <PackageStep /> : <OriginStep />}
+                  {index === 0 ? (
+                    <OriginStep control={methods.control} />
+                  ) : index === 1 ? (
+                    <DestinationStep control={methods.control} />
+                  ) : (
+                    <PackageStep control={methods.control} />
+                  )}
                   <Box sx={{ mb: 2 }}>
                     <Button
                       variant="contained"
