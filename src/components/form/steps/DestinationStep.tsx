@@ -1,6 +1,7 @@
 import { Autocomplete, TextField } from '@mui/material';
 import { Stack } from '@mui/material';
 import { Controller } from 'react-hook-form';
+import { getFieldValidation } from '../validationHelpers';
 
 const countryOptions = [
   { label: 'The Shawshank Redemption' },
@@ -16,16 +17,26 @@ function DestinationStep({ control }: { control: any }) {
         name="destinationCountry"
         control={control}
         defaultValue=""
-        render={({ field }) => (
-          <Autocomplete
-            disablePortal
-            options={countryOptions}
-            sx={{ width: '200px' }}
-            value={countryOptions.find((option) => option.label === field.value) ?? null}
-            onChange={(_, value) => field.onChange(value?.label ?? '')}
-            renderInput={(params) => <TextField {...params} label="Select Destination" />}
-          />
-        )}
+        render={({ field }) => {
+          const validation = getFieldValidation('destinationCountry', field.value);
+          return (
+            <Autocomplete
+              disablePortal
+              options={countryOptions}
+              sx={{ width: '200px' }}
+              value={countryOptions.find((option) => option.label === field.value) ?? null}
+              onChange={(_, value) => field.onChange(value?.label ?? '')}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Select Destination"
+                  error={validation.hasError}
+                  helperText={validation.message}
+                />
+              )}
+            />
+          );
+        }}
       />
     </Stack>
   );
