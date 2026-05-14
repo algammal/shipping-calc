@@ -53,6 +53,7 @@ function MultiStepForm({
   };
 
   const handleReset = () => {
+    methods.reset();
     setActiveStep(0);
     isSearchedHandler(false);
   };

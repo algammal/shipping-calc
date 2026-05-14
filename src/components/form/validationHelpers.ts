@@ -9,7 +9,7 @@ export function getFieldValidation(
 ): ValidationResult {
   switch (fieldType) {
     case 'weight':
-      if (!value && value !== 0) {
+      if (!value || value == 0) {
         return { hasError: true, message: 'Weight is required' };
       }
       if (value <= 0) {
@@ -18,7 +18,7 @@ export function getFieldValidation(
       return { hasError: false, message: '' };
 
     case 'volume':
-      if (!value && value !== 0) {
+      if (!value || value == 0) {
         return { hasError: true, message: 'Volume is required' };
       }
       if (value <= 0) {
