@@ -6,6 +6,7 @@ function PackageStep() {
         <Stack className='dimensionsRow'>
             <TextField
                 label="Weight"
+                name="weight"
                 type="number"
                 sx={{width:'200px'}}
                 slotProps={{
@@ -21,6 +22,7 @@ function PackageStep() {
                 }}
             />
             <TextField
+                name="volume"
                 label="Volume"
                 type="number"
                 sx={{width:'200px'}}
@@ -36,7 +38,6 @@ function PackageStep() {
                     },
                 }}
             />
-             <TextField fullWidth id="outlined-basic" label="Package Description" variant="outlined" />
         </Stack>
     )
 }

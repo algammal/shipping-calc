@@ -10,27 +10,36 @@ import Typography from '@mui/material/Typography';
 import OriginStep from './steps/OriginStep';
 import PackageStep from './steps/PackageStep';
 
+
 const steps = [
   {
     label: 'Select Origin',
-    color:'#1976d2',
+    color: '#1976d2',
   },
   {
     label: 'Select Destination',
-    color:'#f8b300',
+    color: '#f8b300',
   },
   {
     label: 'Package Dimensions',
-    color:'#18cf99',
+    color: '#18cf99',
   },
 ];
 
-function MultiStepForm({ isSearchedHandler, isSearched }: { isSearchedHandler: (value: boolean) => void, isSearched: boolean }) {
+
+function MultiStepForm({ methods, isSearchedHandler, isSearched }: { methods: any, isSearchedHandler: (value: boolean) => void, isSearched: boolean }) {
   const [activeStep, setActiveStep] = React.useState(0);
 
 
-  const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  const handleNext = async() => {
+    console.log('test',methods.getValues())
+    let isValid = false
+    if(activeStep === 0) isValid = await methods.trigger(["originCountry"]);
+    else if(activeStep === 1) isValid = await methods.trigger(["destinationCountry"]);
+
+
+  if (isValid) setActiveStep((prev) => prev + 1);
+    // setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
   const handleBack = () => {
@@ -49,56 +58,56 @@ function MultiStepForm({ isSearchedHandler, isSearched }: { isSearchedHandler: (
   }
   return (
     <Box sx={{ maxWidth: '100%' }}>
-        {!isSearched &&
+      {!isSearched &&
         <div>
-        <Typography variant="h1">Shipment info</Typography>
-        <p>Please fill in the details for your shipment.following the steps below:</p>
-      <Stepper activeStep={activeStep} orientation="vertical">
-        {steps.map((step, index) => (
-          <Step key={step.label}>
-            <StepLabel
-              optional={
-                index === steps.length - 1 ? (
-                  <Typography variant="caption">Last step</Typography>
-                ) : null
-              }
-               slotProps={{
-          stepIcon: {
-            sx: {
-              // Targets the base icon state, active state, and completed state
-              '&, &.Mui-active, &.Mui-completed': {
-                color: step.color,
-              },
-            },
-          },
-        }}
-            >
-              {step.label}
-            </StepLabel>
-            <StepContent>
-              {index === 2 ? <PackageStep /> : <OriginStep />}
-              <Box sx={{ mb: 2 }}>
-                <Button
-                  variant="contained"
-                  onClick={index === steps.length - 1 ?handelSubmit:handleNext}
-                  sx={{ mt: 1, mr: 1 }}
+          <Typography variant="h1">Shipment info</Typography>
+          <p>Please fill in the details for your shipment.following the steps below:</p>
+          <Stepper activeStep={activeStep} orientation="vertical">
+            {steps.map((step, index) => (
+              <Step key={step.label}>
+                <StepLabel
+                  optional={
+                    index === steps.length - 1 ? (
+                      <Typography variant="caption">Last step</Typography>
+                    ) : null
+                  }
+                  slotProps={{
+                    stepIcon: {
+                      sx: {
+                        // Targets the base icon state, active state, and completed state
+                        '&, &.Mui-active, &.Mui-completed': {
+                          color: step.color,
+                        },
+                      },
+                    },
+                  }}
                 >
-                  {index === steps.length - 1 ? 'Search Couriers' : 'Continue'}
-                </Button>
-                {index !== 0 && <Button
-                  onClick={handleBack}
-                  sx={{ mt: 1, mr: 1 }}
-                >
-                  Back
-                </Button>}
-              </Box>
-            </StepContent>
-          </Step>
-        ))}
-      </Stepper>
-      </div>
+                  {step.label}
+                </StepLabel>
+                <StepContent>
+                  {index === 2 ? <PackageStep /> : <OriginStep />}
+                  <Box sx={{ mb: 2 }}>
+                    <Button
+                      variant="contained"
+                      onClick={index === steps.length - 1 ? handelSubmit : handleNext}
+                      sx={{ mt: 1, mr: 1 }}
+                    >
+                      {index === steps.length - 1 ? 'Search Couriers' : 'Continue'}
+                    </Button>
+                    {index !== 0 && <Button
+                      onClick={handleBack}
+                      sx={{ mt: 1, mr: 1 }}
+                    >
+                      Back
+                    </Button>}
+                  </Box>
+                </StepContent>
+              </Step>
+            ))}
+          </Stepper>
+        </div>
       }
-      {activeStep === steps.length &&  isSearched &&(
+      {activeStep === steps.length && isSearched && (
         <Paper square elevation={0} sx={{ p: 3 }}>
           <Typography>All steps completed - you&apos;re finished</Typography>
           <Button onClick={handleReset} sx={{ mt: 1, mr: 1 }}>
