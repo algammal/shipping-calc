@@ -1,32 +1,49 @@
 import { useQuote } from "../hooks/useQuote";
 import CourierCard from "./CourierCard";
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
 
 function QuoteResults() {
-    const { state } = useQuote();
+  const { state } = useQuote();
 
-    if (!state.quotes || state.quotes.length === 0) {
-        return (
-            <div>
-                <h2>Quote Results</h2>
-                <p>No quotes available for the selected shipment.</p>
-            </div>
-        );
-    }
-
+  if (!state.quotes || state.quotes.length === 0) {
     return (
-        <div>
-            <Typography variant="h5" gutterBottom>Quote Results</Typography>
-            <Grid container spacing={2}>
-                {state.quotes.map((q: any) => (
-                    <Grid item key={q.id} xs={12} sm={6} md={4}>
-                        <CourierCard quote={q} />
-                    </Grid>
-                ))}
-            </Grid>
-        </div>
+      <div>
+        <Typography variant="h5">Quote Results</Typography>
+        <Typography>No quotes available for the selected shipment.</Typography>
+      </div>
     );
+  }
+
+  // Find cheapest & fastest
+  const minTotal = Math.min(...state.quotes.map((q: any) => q.total));
+  const minEta = Math.min(...state.quotes.map((q: any) => q.eta));
+
+  return (
+    <div>
+      <Typography variant="h5" gutterBottom>
+        Quote Results
+      </Typography>
+
+      {/* MUI v6 Grid */}
+      <Grid container spacing={2} columns={12}>
+        {state.quotes.map((q: any) => {
+          const isCheapest = q.total === minTotal;
+          const isFastest = q.eta === minEta;
+
+          return (
+            <Grid key={q.id} xs={12} sm={6} md={3}>
+              <CourierCard
+                quote={q}
+                isCheapest={isCheapest}
+                isFastest={isFastest}
+              />
+            </Grid>
+          );
+        })}
+      </Grid>
+    </div>
+  );
 }
 
 export default QuoteResults;
