@@ -1,4 +1,4 @@
-import * as React from 'react';
+import {useState} from 'react';
 import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
@@ -36,7 +36,7 @@ function MultiStepForm({
   isSearchedHandler: (value: boolean) => void;
   isSearched: boolean;
 }) {
-  const [activeStep, setActiveStep] = React.useState(0);
+  const [activeStep, setActiveStep] = useState(0);
 
   const handleNext = async () => {
     console.log('test',methods.getValues())
