@@ -17,6 +17,8 @@ function App() {
   resolver: zodResolver(quoteSchema),
   mode: "onChange",
   defaultValues: {
+    originCountry: '',
+    destinationCountry: '',
     weight: 0,
     volume: 0,
   },

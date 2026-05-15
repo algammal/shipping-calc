@@ -1,5 +1,6 @@
 import LocationPinIcon from '@mui/icons-material/LocationPin';
 import FlagIcon from '@mui/icons-material/Flag';
+import InventoryIcon from '@mui/icons-material/Inventory';
 import { Stack, Paper, Typography } from '@mui/material';
 
 function SidebarSummary() {
@@ -22,12 +23,12 @@ function SidebarSummary() {
                     display: "flex",
                     alignItems: "baseline",
                     flexFlow: "column",
-                    mb:3
+                    mb:3,
+                    padding: '5px 10px',
+                    borderRadius: '20px',
+                    backgroundColor: '#f5f8ff',
                 }}>
-                    <Typography>location: Egypt, CA</Typography>
-                    <Typography>Name: test</Typography>
-                    <Typography>Phone: 000xxx0000</Typography>
-                    <Typography>Location Details: 000xxx0000</Typography>
+                    <Typography>Egypt, CA</Typography>
                 </Stack>
 
                 <Stack className="row">
@@ -40,19 +41,22 @@ function SidebarSummary() {
                     display: "flex",
                     alignItems: "baseline",
                     flexFlow: "column",
-                    mb:3
+                    mb:3,
+                    padding: '5px 10px',
+                    borderRadius: '20px',
+                    backgroundColor: '#f5f8ff',
                 }}>
-                    <Typography>location: Egypt, CA</Typography>
-                    <Typography>Name: test</Typography>
-                    <Typography>Phone: 000xxx0000</Typography>
-                    <Typography>Location Details: 000xxx0000</Typography>
+                    <Typography>Egypt, CA</Typography>
                 </Stack>
 
-                <Typography variant="h2" className="sectionTitle">
-                    Package Dimensions
-                </Typography>
+                <Stack className="row">
+                    <Paper className="iconCircle iconSecondary" elevation={0}>
+                        <InventoryIcon />
+                    </Paper>
+                    <Typography>Package Dimensions</Typography>
+                </Stack>
 
-                <Stack className="dimensionsRow">
+                <Stack className="dimensionsRow dimensionBox">
                     <div>
                         <Typography>Weight</Typography>
                         <Typography className="valueText">20kg</Typography>
@@ -62,7 +66,6 @@ function SidebarSummary() {
                         <Typography className="valueText">1000cm³</Typography>
                     </div>
                 </Stack>
-                <Stack><Typography>Package Description: Test Package</Typography></Stack>
             </Stack>
         </>
     );
