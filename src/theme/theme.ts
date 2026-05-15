@@ -61,15 +61,15 @@ export const theme = createTheme({
                     },
                     '&.dimensionsRow': {
                         flexDirection: 'row',
-                        backgroundColor: '#f5f8ff',
-                        padding: '13px 10px',
-                        borderRadius: '20px',
                         gap: '32px',
                     },
                     '&.dimensionBox':{
                         display: "flex",
                         alignItems: "center",
-                        justifyContent: "space-around"
+                        justifyContent: "space-around",
+                         backgroundColor: '#f5f8ff',
+                        padding: '13px 10px',
+                        borderRadius: '20px',
                     },
                     '&.fullHeightCenterColumn': {
                         marginTop: '16px'

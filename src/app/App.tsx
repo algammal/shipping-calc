@@ -27,19 +27,21 @@ const onSubmit = (data: QuoteFormData) => {
   console.log("test")
 }
   return (
-    <Box sx={{ display: 'flex', height: '100vh' }}>
-      <Box sx={{ p:'4rem', bgcolor: theme.palette.background.paper }} >
+    <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, minHeight: '100vh' }}>
+      <Box sx={{ p: { xs: 2, md: '4rem' }, bgcolor: theme.palette.background.paper, width: { xs: '100%', md: '360px' } }}>
         <SidebarSummary />
-        </Box>
-      <Box sx={(theme) => ({
-    flex: 1,
-    background: `linear-gradient(
-      to bottom,
-      ${theme.palette.background.default},
-      ${theme.palette.common.white}
-    )`,
-    p:'4rem'
-  })} >
+      </Box>
+      <Box
+        sx={(theme) => ({
+          flex: 1,
+          background: `linear-gradient(
+            to bottom,
+            ${theme.palette.background.default},
+            ${theme.palette.common.white}
+          )`,
+          p: { xs: 2, md: '4rem' },
+        })}
+      >
     <Box >
       <FormProvider {...methods}>
   <form onSubmit={methods.handleSubmit(onSubmit)}>
