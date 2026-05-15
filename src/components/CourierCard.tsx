@@ -6,10 +6,12 @@ import Avatar from '@mui/material/Avatar';
 
 import Typography from '@mui/material/Typography';
 import { red } from '@mui/material/colors';
-
+import { useQuote } from "../hooks/useQuote";
 
 
  function CourierCard() {
+    const { state } = useQuote();
+    console.log('updated state',state)
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardHeader

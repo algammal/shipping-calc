@@ -12,6 +12,7 @@ import DestinationStep from './steps/DestinationStep';
 import PackageStep from './steps/PackageStep';
 import { useQuote } from "../../hooks/useQuote";
 import type { QuoteFormData } from "../../types/quote.types";
+import { useCallQuotes } from "../../hooks/useCallQuotes";
 
 const steps = [
   {
@@ -40,6 +41,7 @@ function MultiStepForm({
 }) {
   const [activeStep, setActiveStep] = useState(0);
   const { dispatch } = useQuote();
+  const { getQuotes } = useCallQuotes();
 const handleNext = async () => {
   let fields: (keyof QuoteFormData)[] = [];
 
@@ -74,13 +76,21 @@ const handleNext = async () => {
   };
 
   const handelSubmit = async () => {
-    handleNext();
-    const isValid = await methods.trigger(['weight', 'volume']);
-    if (isValid) {
-      setActiveStep((prevActiveStep) => prevActiveStep + 1);
-      isSearchedHandler(true);
-    }
-  };
+  const isValid = await methods.trigger(['weight', 'volume']);
+  if (!isValid) return;
+
+  const values = methods.getValues();
+
+  dispatch({
+    type: 'SET_STEP_DATA',
+    payload: values,
+  });
+
+  await getQuotes(values);
+
+  setActiveStep((prev) => prev + 1);
+  isSearchedHandler(true);
+};
   return (
     <Box sx={{ maxWidth: '100%' }}>
       {!isSearched &&

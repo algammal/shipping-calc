@@ -1,0 +1,32 @@
+export const couriers = [
+  {
+    id: "dhl",
+    name: "DHL Express",
+    logo: "/logos/dhl.png",
+    baseRate: 5,
+    weightMultiplier: 1.2,
+    volumeMultiplier: 0.8,
+    speed: 2,
+    taxRate: 0.14,
+  },
+  {
+    id: "aramex",
+    name: "Aramex",
+    logo: "/logos/aramex.png",
+    baseRate: 4,
+    weightMultiplier: 1.0,
+    volumeMultiplier: 1.1,
+    speed: 3,
+    taxRate: 0.14,
+  },
+  {
+    id: "fedex",
+    name: "FedEx",
+    logo: "/logos/fedex.png",
+    baseRate: 6,
+    weightMultiplier: 1.4,
+    volumeMultiplier: 0.9,
+    speed: 1,
+    taxRate: 0.14,
+  },
+];
