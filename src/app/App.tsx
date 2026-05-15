@@ -3,7 +3,7 @@ import { Box } from '@mui/material';
 import{ theme } from '../theme/theme';
 import MultiStepForm from '../components/form/MultiStepForm';
 import SidebarSummary from '../components/SidebarSummary';
-import CourierCard from '../components/CourierCard';
+import QuoteResults from '../components/QuoteResults';
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { quoteSchema } from "../schema/schema";
@@ -50,7 +50,7 @@ const onSubmit = (data: QuoteFormData) => {
       </FormProvider>
       {isSearched && (
         <Box sx={{ mt: 4 }}>
-          <CourierCard/>
+          <QuoteResults />
         </Box>
       )}
     </Box>

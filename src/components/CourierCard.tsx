@@ -3,34 +3,55 @@ import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
 import Avatar from '@mui/material/Avatar';
-
 import Typography from '@mui/material/Typography';
+import Stack from '@mui/material/Stack';
+import Box from '@mui/material/Box';
 import { red } from '@mui/material/colors';
-import { useQuote } from "../hooks/useQuote";
 
+type CourierQuote = {
+  id: string;
+  name: string;
+  logo?: string;
+  basePrice: number;
+  tax: number;
+  total: number;
+  eta: number;
+};
 
- function CourierCard() {
-    const { state } = useQuote();
-    console.log('updated state',state)
+function CourierCard({ quote }: { quote: CourierQuote }) {
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardHeader
         avatar={
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-            R
+          <Avatar src={quote.logo} sx={{ bgcolor: red[500] }} aria-label={quote.name}>
+            {quote.name?.charAt(0) ?? 'C'}
           </Avatar>
         }
-        title="Shrimp and Chorizo Paella"
-        subheader="September 14, 2016"
+        title={quote.name}
+        subheader={`ETA: ${quote.eta} day(s)`}
       />
       <CardContent>
-        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-          This impressive paella is a perfect party dish and a fun meal to cook
-          together with your guests. Add 1 cup of frozen peas along with the mussels,
-          if you like.
-        </Typography>
+        <Stack spacing={1}>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Typography variant="body2" color="text.secondary">
+              Base
+            </Typography>
+            <Typography variant="body2">${quote.basePrice.toFixed(2)}</Typography>
+          </Box>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Typography variant="body2" color="text.secondary">
+              Tax
+            </Typography>
+            <Typography variant="body2">${quote.tax.toFixed(2)}</Typography>
+          </Box>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Typography variant="subtitle1">Total</Typography>
+            <Typography variant="subtitle1">${quote.total.toFixed(2)}</Typography>
+          </Box>
+        </Stack>
       </CardContent>
     </Card>
   );
 }
- export default CourierCard;
+
+export default CourierCard;
