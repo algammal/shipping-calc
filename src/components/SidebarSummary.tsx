@@ -2,8 +2,10 @@ import LocationPinIcon from '@mui/icons-material/LocationPin';
 import FlagIcon from '@mui/icons-material/Flag';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import { Stack, Paper, Typography } from '@mui/material';
+import { useQuote } from "../hooks/useQuote";
 
 function SidebarSummary() {
+     const { state } = useQuote();
     return (
         <>
             <img src="/fincartLogo.avif" alt="logo" width={180} />
@@ -11,7 +13,7 @@ function SidebarSummary() {
                 <Typography variant="h2" className="sectionTitle">
                     Shipment Summary
                 </Typography>
-
+                {state.originCountry.length > 0 && <div>
                 <Stack className="row">
                     <Paper className="iconCircle iconPrimary" elevation={0}>
                         <LocationPinIcon />
@@ -28,9 +30,12 @@ function SidebarSummary() {
                     borderRadius: '20px',
                     backgroundColor: '#f5f8ff',
                 }}>
-                    <Typography>Egypt, CA</Typography>
+                    <Typography>{state.originCountry}</Typography>
                 </Stack>
-
+                </div>
+                }
+                {
+                state.destinationCountry.length > 0 && <div>
                 <Stack className="row">
                     <Paper className="iconCircle iconWarning" elevation={0}>
                         <FlagIcon />
@@ -46,10 +51,14 @@ function SidebarSummary() {
                     borderRadius: '20px',
                     backgroundColor: '#f5f8ff',
                 }}>
-                    <Typography>Egypt, CA</Typography>
+                    <Typography>{state.destinationCountry}</Typography>
                 </Stack>
-
-                <Stack className="row">
+                </div>
+                }
+                {
+                    Number(state.weight) > 0  && Number(state.volume) > 0 && 
+                    <div>
+                         <Stack className="row">
                     <Paper className="iconCircle iconSecondary" elevation={0}>
                         <InventoryIcon />
                     </Paper>
@@ -59,13 +68,17 @@ function SidebarSummary() {
                 <Stack className="dimensionsRow dimensionBox">
                     <div>
                         <Typography>Weight</Typography>
-                        <Typography className="valueText">20kg</Typography>
+                        <Typography className="valueText">{state.weight}kg</Typography>
                     </div>
                     <div>
                         <Typography>Volume</Typography>
-                        <Typography className="valueText">1000cm³</Typography>
+                        <Typography className="valueText">{state.volume}cm³</Typography>
                     </div>
                 </Stack>
+
+                    </div>
+                }
+               
             </Stack>
         </>
     );

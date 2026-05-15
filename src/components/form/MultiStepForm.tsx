@@ -10,6 +10,8 @@ import Typography from '@mui/material/Typography';
 import OriginStep from './steps/OriginStep';
 import DestinationStep from './steps/DestinationStep';
 import PackageStep from './steps/PackageStep';
+import { useQuote } from "../../hooks/useQuote";
+import type { QuoteFormData } from "../../types/quote.types";
 
 const steps = [
   {
@@ -37,16 +39,26 @@ function MultiStepForm({
   isSearched: boolean;
 }) {
   const [activeStep, setActiveStep] = useState(0);
+  const { dispatch } = useQuote();
+const handleNext = async () => {
+  let fields: (keyof QuoteFormData)[] = [];
 
-  const handleNext = async () => {
-    console.log('test',methods.getValues())
-    let isValid = false;
-    if (activeStep === 0) isValid = await methods.trigger(['originCountry']);
-    else if (activeStep === 1) isValid = await methods.trigger(['destinationCountry']);
-    else if (activeStep === 2) isValid = await methods.trigger(['weight', 'volume']);
+  if (activeStep === 0) fields = ["originCountry"];
+  if (activeStep === 1) fields = ["destinationCountry"];
+  if (activeStep === 2) fields = ["weight", "volume"];
 
-    if (isValid) setActiveStep((prev) => prev + 1);
-  };
+  const isValid = await methods.trigger(fields);
+
+  if (!isValid) return;
+
+  const values = methods.getValues();
+  dispatch({
+    type: "SET_STEP_DATA",
+    payload: values,
+  });
+
+  if (activeStep !== 2)setActiveStep((prev) => prev + 1);
+};
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
@@ -54,11 +66,15 @@ function MultiStepForm({
 
   const handleReset = () => {
     methods.reset();
+    dispatch({
+    type: "RESET"
+  });
     setActiveStep(0);
     isSearchedHandler(false);
   };
 
   const handelSubmit = async () => {
+    handleNext();
     const isValid = await methods.trigger(['weight', 'volume']);
     if (isValid) {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);

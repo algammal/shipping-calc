@@ -32,8 +32,8 @@ function DestinationStep({ control }: { control: any }) {
               disablePortal
               options={countries}
               sx={{ width: '200px' }}
-              value={countries.find((option) => option.value === field.value) ?? null}
-              onChange={(_, value) => field.onChange(value?.value ?? '')}
+              value={countries.find((option) => option.label === field.value) ?? null}
+              onChange={(_, value) => field.onChange(value?.label ?? '')}
               onBlur={handleFieldBlur}
               renderInput={(params) => (
                 <TextField

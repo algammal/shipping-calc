@@ -4,6 +4,7 @@ import App from "./app/App";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { theme } from "./theme/theme";
+import { QuoteProvider } from "./context/QuoteContext";
 
 async function startApp() {
   if (import.meta.env.DEV) {
@@ -12,14 +13,15 @@ async function startApp() {
       onUnhandledRequest: "bypass",
     });
   }
-
-  createRoot(document.getElementById("root")!).render(
+  createRoot(document.getElementById('root')!).render(
     <StrictMode>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <App />
+        <QuoteProvider>
+          <App />
+        </QuoteProvider>
       </ThemeProvider>
-    </StrictMode>
+    </StrictMode>,
   );
 }
 

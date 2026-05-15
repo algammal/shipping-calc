@@ -10,8 +10,6 @@ import { red } from '@mui/material/colors';
 
 
  function CourierCard() {
-
-
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardHeader
