@@ -20,3 +20,5 @@ export type QuoteState = QuoteFormData & {
   loading: boolean;
   error: string | null;
 };
+
+export type QuoteRequestBody = QuoteFormData;
