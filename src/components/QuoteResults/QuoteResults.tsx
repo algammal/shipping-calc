@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { useQuote } from "../../hooks/useQuote";
 import { useCallQuotes } from "../../hooks/useCallQuotes";
 import type { QuoteResponse } from "../../types/quote.types";
@@ -17,6 +18,16 @@ function QuoteResults({
   const { state } = useQuote();
   const { getQuotes } = useCallQuotes();
 
+  const { minTotal, minEta } = useMemo(() => {
+    if (!state.quotes || state.quotes.length === 0) {
+      return { minTotal: 0, minEta: 0 };
+    }
+    return {
+      minTotal: Math.min(...state.quotes.map((q) => q.total)),
+      minEta: Math.min(...state.quotes.map((q) => q.eta)),
+    };
+  }, [state.quotes]);
+
   if (state.loading) {
     return <LoadingSkeleton />;
   }
@@ -28,9 +39,6 @@ function QuoteResults({
   if (isSearched && (!state.quotes || state.quotes.length === 0)) {
     return <EmptyState />;
   }
-
-  const minTotal = state.quotes.length > 0 ? Math.min(...state.quotes.map((q: QuoteResponse) => q.total)) : 0;
-  const minEta = state.quotes.length > 0 ? Math.min(...state.quotes.map((q: QuoteResponse) => q.eta)) : 0;
 
   return (
     <ResultsWrapper>
