@@ -2,7 +2,6 @@ import { Autocomplete, TextField } from '@mui/material';
 import { Stack } from '@mui/material';
 import { Controller } from 'react-hook-form';
 import { useEffect, useState, useRef } from 'react';
-import { getFieldValidation } from '../validationHelpers';
 import { useCountries } from "../../../hooks/useCountries";
 
 
@@ -25,8 +24,7 @@ function DestinationStep({ control }: { control: any }) {
         name="destinationCountry"
         control={control}
         defaultValue=""
-        render={({ field }) => {
-          const validation = getFieldValidation('destinationCountry', field.value);
+        render={({ field, fieldState }) => {
           return (
             <Autocomplete
               disablePortal
@@ -38,9 +36,9 @@ function DestinationStep({ control }: { control: any }) {
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  label="Select Destination"
-                  error={touched && validation.hasError}
-                  helperText={touched ? validation.message : ''}
+                  label="Select Country"
+                  error={!!fieldState.error}
+                  helperText={fieldState.error?.message}
                 />
               )}
             />

@@ -2,7 +2,6 @@ import { TextField, InputAdornment } from '@mui/material';
 import { Stack } from '@mui/material';
 import { Controller } from 'react-hook-form';
 import { useEffect, useState, useRef } from 'react';
-import { getFieldValidation } from '../validationHelpers';
 
 function PackageStep({ control }: { control: any }) {
   const [touchedFields, setTouchedFields] = useState<{ weight: boolean; volume: boolean }>({
@@ -31,15 +30,14 @@ function PackageStep({ control }: { control: any }) {
         name="weight"
         control={control}
         defaultValue={0}
-        render={({ field }) => {
-          const validation = getFieldValidation('weight', field.value);
+        render={({ field, fieldState }) => {
           return (
             <TextField
               {...field}
               label="Weight"
               type="number"
-              error={touchedFields.weight && validation.hasError}
-              helperText={touchedFields.weight ? validation.message : ''}
+              error={!!fieldState.error}
+              helperText={fieldState.error?.message}
               onBlur={() => {
                 handleFieldBlur('weight');
                 field.onBlur();
@@ -64,15 +62,14 @@ function PackageStep({ control }: { control: any }) {
         name="volume"
         control={control}
         defaultValue={0}
-        render={({ field }) => {
-          const validation = getFieldValidation('volume', field.value);
+        render={({ field, fieldState }) => {
           return (
             <TextField
               {...field}
               label="Volume"
               type="number"
-              error={touchedFields.volume && validation.hasError}
-              helperText={touchedFields.volume ? validation.message : ''}
+              error={!!fieldState.error}
+              helperText={fieldState.error?.message}
               onBlur={() => {
                 handleFieldBlur('volume');
                 field.onBlur();

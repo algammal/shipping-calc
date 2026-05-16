@@ -4,10 +4,23 @@ import{ theme } from '../theme/theme';
 import MultiStepForm from '../components/form/MultiStepForm';
 import SidebarSummary from '../components/SidebarSummary';
 import QuoteResults from '../components/QuoteResults';
-import { useForm, FormProvider } from "react-hook-form";
+import { useForm, FormProvider, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { quoteSchema } from "../schema/schema";
 import type { QuoteFormData } from "../schema/schema";
+import { useEffect } from "react";
+import { useQuote } from "../hooks/useQuote";
+
+function FormObserver() {
+  const { dispatch } = useQuote();
+  const values = useWatch();
+  
+  useEffect(() => {
+    dispatch({ type: "SET_STEP_DATA", payload: values });
+  }, [values, dispatch]);
+
+  return null;
+}
 
 
 
@@ -44,6 +57,7 @@ const onSubmit = (data: QuoteFormData) => {
       >
     <Box >
       <FormProvider {...methods}>
+        <FormObserver />
   <form onSubmit={methods.handleSubmit(onSubmit)}>
       <MultiStepForm methods={methods} isSearchedHandler = {setIsSearched} isSearched={isSearched} />
       </form>
