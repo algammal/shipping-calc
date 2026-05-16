@@ -13,8 +13,8 @@ export const CourierAvatar = styled(Avatar)(({ theme }) => ({
   border: `1px solid ${theme.palette.divider}`,
   "& img": {
     objectFit: "contain",
-    width: "80%",
-    height: "80%",
+    width: "100%",
+    height: "100%",
   },
 }));
 
