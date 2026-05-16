@@ -6,97 +6,140 @@ import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
+import { styled } from "@mui/material/styles";
+import type { QuoteResponse } from "../types/quote.types";
 
-type CourierQuote = {
-  id: string;
-  name: string;
-  logo?: string;
-  basePrice: number;
-  tax: number;
-  total: number;
-  eta: number;
-};
+// ─── Styled Components ───────────────────────────────────────────────────────
 
-function CourierCard({
-  quote,
-  isCheapest = false,
-  isFastest = false,
-}: {
-  quote: CourierQuote;
+const CourierAvatar = styled(Avatar)(() => ({
+  width: 48,
+  height: 48,
+}));
+
+const CourierNameText = styled(Typography)(() => ({
+  fontWeight: 700,
+})) as typeof Typography;
+
+const EtaText = styled(Typography)(() => ({
+  fontWeight: 500,
+})) as typeof Typography;
+
+const PriceValueText = styled(Typography)(() => ({
+  fontWeight: 500,
+})) as typeof Typography;
+
+const TotalLabelText = styled(Typography)(() => ({
+  fontWeight: 600,
+})) as typeof Typography;
+
+const TotalValueText = styled(Typography, {
+  shouldForwardProp: (prop) => prop !== "isCheapest",
+})<{ isCheapest?: boolean }>(({ theme, isCheapest }) => ({
+  fontWeight: 800,
+  color: isCheapest ? theme.palette.success.main : theme.palette.text.primary,
+}));
+
+const CardBody = styled(CardContent)(() => ({
+  flex: 1,
+  display: "flex",
+  flexDirection: "column",
+  paddingTop: 0,
+}));
+
+const PriceRow = styled(Box)(() => ({
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+}));
+
+const PriceStack = styled(Stack)(() => ({
+  marginBottom: 16,
+  flex: 1,
+}));
+
+const CardFooter = styled(Box)(() => ({
+  marginTop: "auto",
+}));
+
+const TotalRow = styled(Box)(({ theme }) => ({
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "baseline",
+  borderTop: `1px solid ${theme.palette.divider}`,
+  paddingTop: theme.spacing(1.5),
+}));
+
+const BadgeChip = styled(Chip)(() => ({
+  fontWeight: 600,
+}));
+
+// ─── Types ───────────────────────────────────────────────────────────────────
+
+interface CourierCardProps {
+  quote: QuoteResponse;
   isCheapest?: boolean;
   isFastest?: boolean;
-}) {
+}
+
+// ─── Component ───────────────────────────────────────────────────────────────
+
+function CourierCard({ quote, isCheapest = false, isFastest = false }: CourierCardProps) {
   return (
     <Card
       sx={(theme) => ({
         height: "100%",
         display: "flex",
         flexDirection: "column",
-        borderRadius: '16px',
-        transition: 'transform 0.2s ease, box-shadow 0.2s ease',
-        border: isCheapest ? `2px solid ${theme.palette.success.main}` : isFastest ? `2px solid ${theme.palette.primary.main}` : '2px solid transparent',
-        boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
-        '&:hover': {
-          transform: 'translateY(-4px)',
-          boxShadow: '0 12px 24px rgba(0,0,0,0.1)',
-        }
+        border: isCheapest
+          ? `2px solid ${theme.palette.success.main}`
+          : isFastest
+          ? `2px solid ${theme.palette.primary.main}`
+          : "2px solid transparent",
       })}
     >
       <CardHeader
         avatar={
-          <Avatar src={quote.logo} alt={quote.name} sx={{ width: 48, height: 48, bgcolor: 'primary.main' }}>
+          <CourierAvatar src={quote.logo} alt={quote.name}>
             {quote.name?.charAt(0)}
-          </Avatar>
+          </CourierAvatar>
         }
-        title={<Typography variant="h6" fontWeight={700}>{quote.name}</Typography>}
+        title={<CourierNameText variant="h6">{quote.name}</CourierNameText>}
         subheader={
-          <Typography variant="body2" color="text.secondary" fontWeight={500}>
+          <EtaText variant="body2" color="text.secondary">
             Estimated Delivery: {quote.eta} day(s)
-          </Typography>
+          </EtaText>
         }
       />
 
-      <CardContent sx={{ flex: 1, display: 'flex', flexDirection: 'column', pt: 0 }}>
-        <Stack spacing={1.5} sx={{ mb: 2, flex: 1 }}>
-          <Box display="flex" justifyContent="space-between" alignItems="center">
-            <Typography variant="body2" color="text.secondary">
-              Base Price
-            </Typography>
-            <Typography variant="body2" fontWeight={500}>
-              ${quote.basePrice.toFixed(2)}
-            </Typography>
-          </Box>
+      <CardBody>
+        <PriceStack spacing={1.5}>
+          <PriceRow>
+            <Typography variant="body2" color="text.secondary">Base Price</Typography>
+            <PriceValueText variant="body2">${quote.basePrice.toFixed(2)}</PriceValueText>
+          </PriceRow>
 
-          <Box display="flex" justifyContent="space-between" alignItems="center">
-            <Typography variant="body2" color="text.secondary">
-              Tax & Fees
-            </Typography>
-            <Typography variant="body2" fontWeight={500}>
-              ${quote.tax.toFixed(2)}
-            </Typography>
-          </Box>
-        </Stack>
+          <PriceRow>
+            <Typography variant="body2" color="text.secondary">Tax & Fees</Typography>
+            <PriceValueText variant="body2">${quote.tax.toFixed(2)}</PriceValueText>
+          </PriceRow>
+        </PriceStack>
 
-        <Box sx={{ mt: 'auto' }}>
-          <Box display="flex" justifyContent="space-between" alignItems="baseline" sx={{ borderTop: '1px solid', borderColor: 'divider', pt: 1.5 }}>
-            <Typography variant="subtitle1" fontWeight={600}>Total</Typography>
-            <Typography variant="h5" fontWeight={800} color={isCheapest ? "success.main" : "text.primary"}>
+        <CardFooter>
+          <TotalRow>
+            <TotalLabelText variant="subtitle1">Total</TotalLabelText>
+            <TotalValueText variant="h5" isCheapest={isCheapest}>
               ${quote.total.toFixed(2)}
-            </Typography>
-          </Box>
+            </TotalValueText>
+          </TotalRow>
 
           {(isCheapest || isFastest) && (
-            <Stack direction="row" spacing={1} mt={2}>
-              {isCheapest && (
-                <Chip label="Best Value" color="success" size="small" sx={{ fontWeight: 600 }} />
-              )}
-              {isFastest && (
-                <Chip label="Lightning Fast" color="primary" size="small" sx={{ fontWeight: 600 }} />
-              )}
+            <Stack direction="row" spacing={1} sx={{ mt: 2 }}>
+              {isCheapest && <BadgeChip label="Best Value" color="success" size="small" />}
+              {isFastest && <BadgeChip label="Lightning Fast" color="primary" size="small" />}
             </Stack>
           )}
-        </Box>
-      </CardContent>
+        </CardFooter>
+      </CardBody>
     </Card>
   );
 }

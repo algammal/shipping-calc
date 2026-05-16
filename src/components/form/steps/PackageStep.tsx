@@ -1,8 +1,13 @@
 import { TextField, InputAdornment } from '@mui/material';
 import { Stack } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import { Controller } from 'react-hook-form';
 import { useEffect, useState, useRef } from 'react';
 import type { StepProps } from "../../../types/form.types";
+
+const DimensionField = styled(TextField)(() => ({
+  width: 200,
+}));
 
 function PackageStep({ control }: StepProps) {
   const [touchedFields, setTouchedFields] = useState<{ weight: boolean; volume: boolean }>({
@@ -33,7 +38,7 @@ function PackageStep({ control }: StepProps) {
         defaultValue={0}
         render={({ field, fieldState }) => {
           return (
-            <TextField
+            <DimensionField
               {...field}
               label="Weight"
               type="number"
@@ -43,7 +48,6 @@ function PackageStep({ control }: StepProps) {
                 handleFieldBlur('weight');
                 field.onBlur();
               }}
-              sx={{ width: '200px' }}
               value={field.value || ''}
               onChange={(e) => field.onChange(e.target.value ? parseFloat(e.target.value) : 0)}
               slotProps={{
@@ -65,7 +69,7 @@ function PackageStep({ control }: StepProps) {
         defaultValue={0}
         render={({ field, fieldState }) => {
           return (
-            <TextField
+            <DimensionField
               {...field}
               label="Volume"
               type="number"
@@ -75,7 +79,6 @@ function PackageStep({ control }: StepProps) {
                 handleFieldBlur('volume');
                 field.onBlur();
               }}
-              sx={{ width: '200px' }}
               value={field.value || ''}
               onChange={(e) => field.onChange(e.target.value ? parseFloat(e.target.value) : 0)}
               slotProps={{

@@ -5,7 +5,7 @@ export type { QuoteFormData };
 export type QuoteResponse = {
   id: string;
   name: string;
-  logo: string;
+  logo?: string;
   basePrice: number;
   tax: number;
   total: number;
