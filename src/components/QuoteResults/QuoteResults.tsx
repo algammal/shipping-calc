@@ -1,12 +1,13 @@
-import { useQuote } from "../hooks/useQuote";
-import { useCallQuotes } from "../hooks/useCallQuotes";
-import type { QuoteResponse } from "../types/quote.types";
-import CourierCard from "./CourierCard";
+import { useQuote } from "../../hooks/useQuote";
+import { useCallQuotes } from "../../hooks/useCallQuotes";
+import type { QuoteResponse } from "../../types/quote.types";
+import CourierCard from "../CourierCard";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import LoadingSkeleton from "./states/LoadingSkeleton";
-import ErrorState from "./states/ErrorState";
-import EmptyState from "./states/EmptyState";
+import LoadingSkeleton from "../states/LoadingSkeleton";
+import ErrorState from "../states/ErrorState";
+import EmptyState from "../states/EmptyState";
+import { ResultsWrapper } from "./QuoteResults.styles";
 
 function QuoteResults({
   isSearched,
@@ -28,11 +29,11 @@ function QuoteResults({
     return <EmptyState />;
   }
 
-  const minTotal = Math.min(...state.quotes.map((q: QuoteResponse) => q.total));
-  const minEta = Math.min(...state.quotes.map((q: QuoteResponse) => q.eta));
+  const minTotal = state.quotes.length > 0 ? Math.min(...state.quotes.map((q: QuoteResponse) => q.total)) : 0;
+  const minEta = state.quotes.length > 0 ? Math.min(...state.quotes.map((q: QuoteResponse) => q.eta)) : 0;
 
   return (
-    <div>
+    <ResultsWrapper>
       {
         isSearched &&
         <Typography variant="h5" gutterBottom>
@@ -55,7 +56,7 @@ function QuoteResults({
           );
         })}
       </Grid>
-    </div>
+    </ResultsWrapper>
   );
 }
 

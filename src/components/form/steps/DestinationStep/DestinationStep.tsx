@@ -1,19 +1,16 @@
-import { Autocomplete, TextField, Alert, Button, Snackbar } from '@mui/material';
+import { TextField, Alert, Button, Snackbar } from '@mui/material';
 import { Stack } from '@mui/material';
-import { styled } from '@mui/material/styles';
 import { Controller } from 'react-hook-form';
 import { useEffect, useState, useRef } from 'react';
-import { useCountries } from "../../../hooks/useCountries";
-import type { StepProps } from "../../../types/form.types";
+import { useCountries } from "../../../../hooks/useCountries";
+import type { StepProps } from "../../../../types/form.types";
+import { CountryAutocomplete } from "./DestinationStep.styles";
 
-const CountryAutocomplete = styled(Autocomplete)(() => ({
-  width: 200,
-})) as typeof Autocomplete;
-
-function OriginStep({ control }: StepProps) {
+function DestinationStep({ control }: StepProps) {
   const [touched, setTouched] = useState(false);
   const touchedRef = useRef(false);
   const { countries, error, retry } = useCountries();
+
   useEffect(() => {
     touchedRef.current = touched;
   }, [touched]);
@@ -40,7 +37,7 @@ function OriginStep({ control }: StepProps) {
         </Alert>
       </Snackbar>
       <Controller
-        name="originCountry"
+        name="destinationCountry"
         control={control}
         defaultValue=""
         render={({ field, fieldState }) => {
@@ -67,4 +64,4 @@ function OriginStep({ control }: StepProps) {
   );
 }
 
-export default OriginStep;
+export default DestinationStep;

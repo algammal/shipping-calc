@@ -1,16 +1,5 @@
 import { Typography } from "@mui/material";
-import Stack from "@mui/material/Stack";
-import { styled } from "@mui/material/styles";
-
-const EmptyStateContainer = styled(Stack)(({ theme }) => ({
-  alignItems: "center",
-  justifyContent: "center",
-  padding: theme.spacing(4),
-  textAlign: "center",
-  backgroundColor: "#f5f8ff",
-  borderRadius: theme.shape.borderRadius,
-}));
-
+import { EmptyStateContainer } from "./EmptyState.styles";
 
 export default function EmptyState() {
   return (

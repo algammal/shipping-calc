@@ -2,18 +2,8 @@ import LocationPinIcon from '@mui/icons-material/LocationPin';
 import FlagIcon from '@mui/icons-material/Flag';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import { Stack, Paper, Typography } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import { useQuote } from "../hooks/useQuote";
-
-const HighlightBox = styled(Stack)(({ theme }) => ({
-    display: 'flex',
-    alignItems: 'baseline',
-    flexFlow: 'column',
-    marginBottom: theme.spacing(3),
-    padding: '5px 10px',
-    borderRadius: '20px',
-    backgroundColor: '#f5f8ff',
-}));
+import { useQuote } from "../../hooks/useQuote";
+import { HighlightBox } from "./SidebarSummary.styles";
 
 function SidebarSummary() {
     const { state } = useQuote();
