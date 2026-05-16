@@ -3,6 +3,7 @@ import { countries } from "./data/countries";
 import { couriers } from "./data/couriers";
 import { calculateQuote } from "./utils/calculateQuote";
 import type { QuoteRequestBody } from "../types/quote.types";
+import type { Courier } from "../types/courier.types";
 
 const getRouteMultiplier = (originCountry: string, destinationCountry: string) => {
   const normalize = (value: string) =>
@@ -20,17 +21,17 @@ const getRouteMultiplier = (originCountry: string, destinationCountry: string) =
 };
 
 const isCourierAvailable = (
-  courier: any,
+  courier: Courier,
   weight: number,
   volume: number,
   routeMultiplier: number
 ) => {
   const idNumber = Number(courier.id.replace(/\D/g, "") || 0);
-  
+
   // Simpler capacity limits: based on courier index, some have lower limits
   const maxWeight = 100 - idNumber * 0.3;
   const maxVolume = 200 - idNumber * 0.5;
-  
+
   // Route constraint: far routes (>1.3 multiplier) only for speed=1 couriers
   const routeOk = routeMultiplier <= 1.3 || courier.speed === 1;
 

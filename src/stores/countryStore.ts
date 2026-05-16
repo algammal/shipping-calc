@@ -1,8 +1,10 @@
-let countriesCache: any[] | null = null;
-let loadingPromise: Promise<any[]> | null = null;
+import type { Country } from "../types/country.types";
+
+let countriesCache: Country[] | null = null;
+let loadingPromise: Promise<Country[]> | null = null;
 
 export const countryStore = {
-  async getCountries(fetcher: () => Promise<any[]>) {
+  async getCountries(fetcher: () => Promise<Country[]>) {
     if (countriesCache) return countriesCache;
 
     if (!loadingPromise) {
@@ -12,7 +14,7 @@ export const countryStore = {
           return data;
         })
         .catch((err) => {
-          loadingPromise = null; 
+          loadingPromise = null;
           throw err;
         });
     }

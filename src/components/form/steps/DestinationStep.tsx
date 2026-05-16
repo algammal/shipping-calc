@@ -3,9 +3,9 @@ import { Stack } from '@mui/material';
 import { Controller } from 'react-hook-form';
 import { useEffect, useState, useRef } from 'react';
 import { useCountries } from "../../../hooks/useCountries";
+import type { StepProps } from "../../../types/form.types";
 
-
-function DestinationStep({ control }: { control: any }) {
+function DestinationStep({ control }: StepProps) {
   const [touched, setTouched] = useState(false);
   const touchedRef = useRef(false);
   const { countries, error, retry } = useCountries();

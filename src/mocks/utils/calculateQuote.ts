@@ -1,5 +1,7 @@
+import type { Courier } from "../../types/courier.types";
+
 export const calculateQuote = (
-  courier: any,
+  courier: Courier,
   weight: number,
   volume: number,
   routeMultiplier = 1,

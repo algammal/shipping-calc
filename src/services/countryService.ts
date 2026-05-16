@@ -11,9 +11,10 @@ export const fetchCountries = async () => {
     }
 
     return await res.json();
-  } catch (error: any) {
-    throw new Error(
-      error.message || "Network error while fetching countries"
-    );
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      throw error; // keep original error message if it's from the if (!res.ok) block
+    }
+    throw new Error("Network error while fetching countries");
   }
 };

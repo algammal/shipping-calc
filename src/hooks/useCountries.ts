@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { fetchCountries } from "../services/countryService";
 import { countryStore } from "../stores/countryStore";
+import type { CountryOption } from "../types/country.types";
 
 export const useCountries = () => {
-  const [countries, setCountries] = useState<any[]>([]);
+  const [countries, setCountries] = useState<CountryOption[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 

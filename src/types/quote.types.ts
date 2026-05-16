@@ -1,9 +1,6 @@
-export type QuoteFormData = {
-  originCountry: string;
-  destinationCountry: string;
-  weight: number;
-  volume: number;
-};
+import type { QuoteFormData } from "../schema/schema";
+
+export type { QuoteFormData };
 
 export type QuoteResponse = {
   id: string;

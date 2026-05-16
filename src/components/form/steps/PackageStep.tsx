@@ -2,8 +2,9 @@ import { TextField, InputAdornment } from '@mui/material';
 import { Stack } from '@mui/material';
 import { Controller } from 'react-hook-form';
 import { useEffect, useState, useRef } from 'react';
+import type { StepProps } from "../../../types/form.types";
 
-function PackageStep({ control }: { control: any }) {
+function PackageStep({ control }: StepProps) {
   const [touchedFields, setTouchedFields] = useState<{ weight: boolean; volume: boolean }>({
     weight: false,
     volume: false,

@@ -11,8 +11,9 @@ import OriginStep from './steps/OriginStep';
 import DestinationStep from './steps/DestinationStep';
 import PackageStep from './steps/PackageStep';
 import { useQuote } from "../../hooks/useQuote";
-import type { QuoteFormData } from "../../types/quote.types";
 import { useCallQuotes } from "../../hooks/useCallQuotes";
+import type { MultiStepFormProps } from "../../types/form.types";
+import type { QuoteFormData } from "../../types/quote.types";
 
 const steps = [
   {
@@ -34,11 +35,7 @@ function MultiStepForm({
   methods,
   isSearchedHandler,
   isSearched,
-}: {
-  methods: any;
-  isSearchedHandler: (value: boolean) => void;
-  isSearched: boolean;
-}) {
+}: MultiStepFormProps) {
   const [activeStep, setActiveStep] = useState(0);
   const { dispatch } = useQuote();
   const { getQuotes } = useCallQuotes();
