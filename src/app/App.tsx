@@ -62,11 +62,10 @@ const onSubmit = (data: QuoteFormData) => {
       <MultiStepForm methods={methods} isSearchedHandler = {setIsSearched} isSearched={isSearched} />
       </form>
       </FormProvider>
-      {isSearched && (
         <Box sx={{ mt: 4 }}>
-          <QuoteResults />
+          <QuoteResults isSearched={isSearched}/>
         </Box>
-      )}
+
     </Box>
     
     </Box>
