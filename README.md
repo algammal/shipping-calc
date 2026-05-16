@@ -1,73 +1,104 @@
-# React + TypeScript + Vite
+# Interactive Shipping Calculator
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React-based front-end project to help merchants quickly calculate shipping quotes using dynamic APIs. This project focuses on UI/UX best practices, scalable state management, strict form validation, and robust error handling.
 
-Currently, two official plugins are available:
+## Features
+- **Multi-Step Form** powered by `react-hook-form`.
+- **Validation** using `zod` for strong typing and explicit error states.
+- **Real-Time Synchronization**: Context-managed state updates automatically as users type.
+- **Modern UI** built with Material UI (MUI), featuring responsive grids, skeletons, and micro-interactions.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+### 1. Handling API Errors (e.g., DHL Rate Service Outage)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+In a real-world scenario where third-party courier services frequently face downtime or severe rate limits, handling API failures gracefully is essential:
 
-## Expanding the ESLint configuration
+- **Circuit Breaker Pattern**: If DHL's rate service goes down, the backend/BFF should implement a circuit breaker to avoid cascading failures. On the frontend, if a specific courier fails, the UI should still present the other available couriers rather than breaking the entire experience.
+- **Idempotent Retries**: In `QuoteResults`, the UI provides a "Retry" mechanism if the overall fetch fails. In production, this can be automated using tools like React Query (`@tanstack/react-query`) with exponential backoff.
+- **Graceful Degradation**: If live rates cannot be fetched, the system could fall back to cached or "flat-rate" estimations (clearly marked as estimated to the merchant) to ensure the quoting process isn't completely blocked.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### 2. Optimizing Bundle Size for Slow 3G Connections
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+Emerging markets or merchants operating in warehouses often experience slow 3G network conditions. To ensure the app remains highly performant:
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+- **Asset Optimization**: Use modern formats (WebP, AVIF) for courier logos, and consider embedding tiny SVGs directly into the bundle rather than triggering separate HTTP requests.
+- **Service Workers (PWA)**: Implement a service worker to cache the UI shell and static assets so subsequent loads are near-instantaneous, even on unstable connections.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+---
+
+## folder structure:
+src/
+│
+├── app/
+│   └── App.tsx
+│
+├── components/
+│   ├── CourierCard.tsx
+│   ├── SidebarSummary.tsx
+│   ├── QuoteResults.tsx
+│   ├── states/
+│   │     ├── LoadingSkeleton.tsx
+│   │     ├── EmptyState.tsx
+│   │     └── ErrorState.tsx
+│   └── form/
+│         ├── MultiStepForm.tsx
+│         ├── steps/
+│         │     ├── OriginStep.tsx
+│         │     ├── DestinationStep.tsx
+│         │     └── PackageStep.tsx
+│
+├── context/
+│   └── QuoteContext.tsx
+│
+├── hooks/
+│   ├── useCallQuotes.ts
+│   ├── useCountries.ts
+│   └── useQuote.ts
+│
+├── mocks/               ← MSW
+│   ├── apis.ts
+│   ├── browser.ts
+│   └── handlers.ts
+│
+├── schema/
+│   └── schema.ts
+│
+├── services/
+│   ├── countryService.ts
+│   └── qouteService.ts
+│
+├── stores/
+│   └── countryStore.ts
+│
+├── theme/
+│   └── theme.ts
+│
+├── types/
+│   └── quote.types.ts
+│
+├── tests/
+│   └── CourierCard.test.tsx
+│
+└── main.tsx
+
+## application flow:
+
+1. **Entry Point (`main.tsx`)**: Bootstraps the React application, applies the MUI Theme (`ThemeProvider`), and provides the global `QuoteProvider`. It also initializes the MSW worker in development to mock the API backend.
+2. **Layout & Orchestration (`App.tsx`)**: The main layout wrapper initializing `react-hook-form` and rendering the `SidebarSummary` alongside the `MultiStepForm`. A custom `FormObserver` synchronizes form values into the `QuoteContext` in real-time.
+3. **Form Progression (`MultiStepForm.tsx` & `steps/`)**: Guides the merchant through Origin, Destination, and Package details. Strict validation rules (via Zod in `schema.ts`) are enforced before progressing to the next step.
+4. **State Management (`QuoteContext.tsx`)**: Acts as the single source of truth for the UI, keeping the form state, UI state, and API payload in sync without deep prop drilling.
+5. **Data Fetching (`useCallQuotes.ts` & `qouteService.ts`)**: Triggered upon form submission, making an asynchronous call to the backend (mocked by MSW) and dispatching loading, error, or success data to the context.
+6. **Results Rendering (`QuoteResults.tsx`)**: Reacts to the Context. It gracefully delegates to `states/` components (`LoadingSkeleton`, `EmptyState`, `ErrorState`) or maps out the retrieved quotes into dynamic `CourierCard` elements, highlighting the most optimal choices.
+
+## Running the Project
+
+```bash
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+To run the automated tests:
+```bash
+npm run test
 ```
