@@ -6,9 +6,16 @@ import Chip from "@mui/material/Chip";
 import CardContent from "@mui/material/CardContent";
 import { styled } from "@mui/material/styles";
 
-export const CourierAvatar = styled(Avatar)(() => ({
+export const CourierAvatar = styled(Avatar)(({ theme }) => ({
   width: 48,
   height: 48,
+  backgroundColor: theme.palette.grey[50],
+  border: `1px solid ${theme.palette.divider}`,
+  "& img": {
+    objectFit: "contain",
+    width: "80%",
+    height: "80%",
+  },
 }));
 
 export const CourierNameText = styled(Typography)(() => ({
