@@ -7,10 +7,13 @@ import { theme } from "./theme/theme";
 import { QuoteProvider } from "./context/QuoteContext";
 
 async function startApp() {
-  if (import.meta.env.DEV) {
+  if (import.meta.env.DEV || window.location.hostname.includes('vercel.app') || window.location.hostname.includes('localhost')) {
     const { worker } = await import("./mocks/browser");
     await worker.start({
       onUnhandledRequest: "bypass",
+      serviceWorker: {
+        url: "/mockServiceWorker.js",
+      },
     });
   }
   createRoot(document.getElementById('root')!).render(
