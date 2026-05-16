@@ -21,7 +21,7 @@ function QuoteResults() {
         </Typography>
         <Grid container spacing={2}>
           {[1, 2, 3].map((n) => (
-            <Grid key={n} item xs={12} sm={6} md={6} lg={4}>
+            <Grid key={n} size={{ xs: 12, sm: 6, md: 6, lg: 4 }}>
               <Skeleton variant="rounded" width="100%" height={200} />
             </Grid>
           ))}
@@ -71,7 +71,7 @@ function QuoteResults() {
           const isFastest = q.eta === minEta;
 
           return (
-            <Grid key={q.id} item xs={12} sm={6} md={6} lg={4}>
+            <Grid key={q.id} size={{ xs: 12, sm: 6, md: 6, lg: 4 }}>
               <CourierCard
                 quote={q}
                 isCheapest={isCheapest}
